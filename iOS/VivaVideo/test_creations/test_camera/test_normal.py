@@ -24,7 +24,10 @@ class TestCameraNormal(TestCase):
             sc.driver.find_element_by_accessibility_id("camerta_f").click()
 
         sc.logger.info('点击高清拍摄')
-        sc.driver.find_element_by_name("高清拍摄").click()
+        try:
+            sc.driver.find_element_by_name("高清拍摄").click()
+        except NoSuchElementException:
+            sc.driver.find_element_by_name("拍摄").click()
         time.sleep(1)
         sc.capture_screen(fun_name, self.img_path)
 
@@ -32,7 +35,11 @@ class TestCameraNormal(TestCase):
         try:
             sc.driver.find_element_by_name("跳过").click()
             time.sleep(1)
-            sc.driver.find_element_by_name("高清拍摄").click()
+            try:
+                sc.driver.find_element_by_name("高清拍摄").click()
+            except NoSuchElementException:
+                sc.driver.find_element_by_name("拍摄").click()
+                time.sleep(1)
         except NoSuchElementException:
             sc.logger.info('已跳过订阅页面')
 
@@ -75,7 +82,11 @@ class TestCameraNormal(TestCase):
 
         time.sleep(2)
         sc.logger.info('点击高清拍摄')
-        sc.driver.find_element_by_name("高清拍摄").click()
+        try:
+            sc.driver.find_element_by_name("高清拍摄").click()
+        except NoSuchElementException:
+            sc.driver.find_element_by_name("拍摄").click()
+        time.sleep(1)
 
         sc.logger.info('点击设置按钮')
         sc.driver.find_element_by_name("vivavideo camera tool icon set").click()
@@ -140,8 +151,11 @@ class TestCameraNormal(TestCase):
         fun_name = 'test_normal_shot'
 
         sc.logger.info('点击高清拍摄')
+        try:
+            sc.driver.find_element_by_name("高清拍摄").click()
+        except NoSuchElementException:
+            sc.driver.find_element_by_name("拍摄").click()
         time.sleep(1)
-        sc.driver.find_element_by_name("高清拍摄").click()
         sc.capture_screen(fun_name, self.img_path)
 
         sc.logger.info('视频尺寸,全屏切换到3:4')

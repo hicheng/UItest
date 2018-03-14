@@ -50,19 +50,28 @@ class TestHome(TestCase):
         """首页-次要功能位"""
         fun_name = 'test_home_minor'
 
-        # sc.logger.info('slideplus广告位')
-        # sc.driver.find_element_by_name("一键大片").click()
-        # try:
-        #     WebDriverWait(sc.driver, 15).until(
-        #         lambda SlidePlus: SlidePlus.find_element_by_name("完成"))
-        #     sc.capture_screen(fun_name, self.img_path)
-        #     sc.driver.find_element_by_name("完成").click()
-        # except TimeoutError as t:
-        #     sc.logger.error('跳转AppStore超时',t)
-        #     return False
+        sc.logger.info('slideplus广告位')
+        sc.driver.find_element_by_name("一键大片").click()
+        try:
+            WebDriverWait(sc.driver, 15).until(
+                lambda SlidePlus: SlidePlus.find_element_by_name("完成"))
+            sc.capture_screen(fun_name, self.img_path)
+            sc.driver.find_element_by_name("完成").click()
+        except TimeoutError as t:
+            sc.logger.error('跳转AppStore超时',t)
+            return False
 
         sc.logger.info('相册MV')
         sc.driver.find_element_by_name("相册MV").click()
+
+        sc.logger.info("授权小影访问相册和媒体资料")
+        try:
+            sc.driver.find_element_by_name("好").click()  # 授权相册
+            time.sleep(2)
+            sc.driver.find_element_by_name("好").click()  # 授权媒体资料库
+        except NoSuchElementException:
+            sc.logger.info("已授权")
+
         el_imgs = sc.driver.find_elements_by_xpath("//*/XCUIElementTypeImage")
         i = 1  #第0个为顶部的下拉框
         while i < len(el_imgs):
@@ -169,61 +178,61 @@ class TestHome(TestCase):
         sc.logger.info('返回创作中心')
         sc.driver.find_element_by_name("vivavideo com nav back n").click()
 
-    # def test_home_04_other(self):
-    #     """首页-小影百宝箱及其他."""
-    #     fun_name = 'test_home_other'
-    #
-    #     sc.logger.info('向上滑动')
-    #     start_x = self.width // 2
-    #     start_bottom = self.height - self.height // 5
-    #     sc.swipe_by_ratio(start_x, start_bottom, 'up', 0.6, 1000)
-    #     sc.capture_screen(fun_name, self.img_path)
-    #
-    #     sc.logger.info('小影百宝箱-浪漫满屋')
-    #     el_box1 = sc.driver.find_elements_by_xpath("//*/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeImage")
-    #     while True:
-    #         try:
-    #             el_box1[1].click()
-    #             sc.capture_screen(fun_name, self.img_path)
-    #             break
-    #         except:
-    #             sc.swipe_by_ratio(start_x, start_bottom, 'up', 0.6, 1000)
-    #
-    #     try:
-    #         sc.driver.find_element_by_name("已下载").click()
-    #     except:
-    #         sc.logger.info('点击一键下载')
-    #         sc.driver.find_element_by_name("一键下载").click()
-    #         sc.capture_screen(fun_name, self.img_path)
-    #         try:
-    #             WebDriverWait(sc.driver, 60).until(
-    #                 lambda download: download.find_element_by_name("已下载"))
-    #         except TimeoutError as t:
-    #             sc.logger.error("下载超时", t)
-    #             return False
-    #
-    #     sc.swipe_by_ratio(start_x, start_bottom, 'up', 0.6, 1000)
-    #     sc.driver.find_element_by_name("vivavideo com nav back n").click()
-    #
-    #     sc.logger.info('小影百宝箱-老友记')
-    #     el_box2 = sc.driver.find_elements_by_xpath("//*/XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeImage")
-    #     el_box2[1].click()
-    #     sc.capture_screen(fun_name, self.img_path)
-    #     sc.driver.find_element_by_name("vivavideo com nav back n").click()
-    #
-    #     sc.logger.info('首页活动')
-    #     sc.swipe_by_ratio(start_x, start_bottom, 'up', 0.5, 800)
-    #     sc.driver.find_element_by_xpath("//*/XCUIElementTypeCell[5]/XCUIElementTypeOther/XCUIElementTypeButton").click()
-    #     time.sleep(3)
-    #     sc.capture_screen(fun_name, self.img_path)
-    #     sc.swipe_by_ratio(start_x, start_bottom, 'up', 0.6, 1000)
-    #     sc.driver.find_element_by_name("vivavideo common back n").click()
-    #
-    #     sc.logger.info('向下滑动，恢复创作页初始状态')
-    #     x_down = self.width // 2
-    #     y_down = self.height // 5
-    #     sc.swipe_by_ratio(x_down, y_down, 'down', 0.7, 800)
-    #     sc.capture_screen(fun_name, self.img_path)
+    def test_home_04_other(self):
+        """首页-小影百宝箱及其他."""
+        fun_name = 'test_home_other'
+
+        sc.logger.info('向上滑动')
+        start_x = self.width // 2
+        start_bottom = self.height - self.height // 5
+        sc.swipe_by_ratio(start_x, start_bottom, 'up', 0.6, 1000)
+        sc.capture_screen(fun_name, self.img_path)
+
+        sc.logger.info('小影百宝箱-浪漫满屋')
+        el_box1 = sc.driver.find_elements_by_xpath("//*/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeImage")
+        while True:
+            try:
+                el_box1[1].click()
+                sc.capture_screen(fun_name, self.img_path)
+                break
+            except:
+                sc.swipe_by_ratio(start_x, start_bottom, 'up', 0.6, 1000)
+
+        try:
+            sc.driver.find_element_by_name("已下载").click()
+        except:
+            sc.logger.info('点击一键下载')
+            sc.driver.find_element_by_name("一键下载").click()
+            sc.capture_screen(fun_name, self.img_path)
+            try:
+                WebDriverWait(sc.driver, 60).until(
+                    lambda download: download.find_element_by_name("已下载"))
+            except TimeoutError as t:
+                sc.logger.error("下载超时", t)
+                return False
+
+        sc.swipe_by_ratio(start_x, start_bottom, 'up', 0.6, 1000)
+        sc.driver.find_element_by_name("vivavideo com nav back n").click()
+
+        sc.logger.info('小影百宝箱-老友记')
+        el_box2 = sc.driver.find_elements_by_xpath("//*/XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeImage")
+        el_box2[1].click()
+        sc.capture_screen(fun_name, self.img_path)
+        sc.driver.find_element_by_name("vivavideo com nav back n").click()
+
+        sc.logger.info('首页活动')
+        sc.swipe_by_ratio(start_x, start_bottom, 'up', 0.5, 800)
+        sc.driver.find_element_by_xpath("//*/XCUIElementTypeCell[5]/XCUIElementTypeOther/XCUIElementTypeButton").click()
+        time.sleep(3)
+        sc.capture_screen(fun_name, self.img_path)
+        sc.swipe_by_ratio(start_x, start_bottom, 'up', 0.6, 1000)
+        sc.driver.find_element_by_name("vivavideo common back n").click()
+
+        sc.logger.info('向下滑动，恢复创作页初始状态')
+        x_down = self.width // 2
+        y_down = self.height // 5
+        sc.swipe_by_ratio(x_down, y_down, 'down', 0.7, 800)
+        sc.capture_screen(fun_name, self.img_path)
 
 
 

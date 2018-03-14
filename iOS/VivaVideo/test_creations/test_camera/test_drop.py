@@ -21,19 +21,27 @@ class TestCameraCancel(TestCase):
         time.sleep(5)
         sc.logger.info('点击创作中心主按钮')
         try:
-            sc.driver.find_element_by_xpath("//XCUIElementTypeImage[@name='camerta_n']").click()
+            sc.driver.find_element_by_accessibility_id("camerta_n").click()
         except NoSuchElementException:
-            sc.driver.find_element_by_xpath("//XCUIElementTypeImage[@name='camerta_f']").click()
+            sc.driver.find_element_by_accessibility_id("camerta_f").click()
 
         sc.logger.info('点击高清拍摄')
-        sc.driver.find_element_by_name("高清拍摄").click()
+        try:
+            sc.driver.find_element_by_name("高清拍摄").click()
+        except NoSuchElementException:
+            sc.driver.find_element_by_name("拍摄").click()
         time.sleep(1)
+        sc.capture_screen(fun_name, self.img_path)
 
         sc.logger.info('跳过订阅页面')
         try:
             sc.driver.find_element_by_name("跳过").click()
             time.sleep(1)
-            sc.driver.find_element_by_name("高清拍摄").click()
+            try:
+                sc.driver.find_element_by_name("高清拍摄").click()
+            except NoSuchElementException:
+                sc.driver.find_element_by_name("拍摄").click()
+                time.sleep(1)
         except NoSuchElementException:
             sc.logger.info('已跳过订阅页面')
 
@@ -78,7 +86,10 @@ class TestCameraCancel(TestCase):
         fun_name = 'test_cancel_save'
 
         sc.logger.info('点击高清拍摄')
-        sc.driver.find_element_by_name("高清拍摄").click()
+        try:
+            sc.driver.find_element_by_name("高清拍摄").click()
+        except NoSuchElementException:
+            sc.driver.find_element_by_name("拍摄").click()
         time.sleep(1)
 
         sc.logger.info('开始录制')
@@ -95,7 +106,10 @@ class TestCameraCancel(TestCase):
         sc.capture_screen(fun_name, self.img_path)
 
         sc.logger.info('点击“取消”按钮')
-        sc.driver.find_element_by_name("取消").click()
+        try:
+            sc.driver.find_element_by_name("取消").click()
+        except NoSuchElementException:
+            sc.logger.info('当前设备为pad，无取消按钮')
         sc.capture_screen(fun_name, self.img_path)
 
         sc.logger.info('点击“保存”按钮')
@@ -113,7 +127,10 @@ class TestCameraCancel(TestCase):
         fun_name = 'test_cancel_preview'
 
         sc.logger.info('点击高清拍摄')
-        sc.driver.find_element_by_name("高清拍摄").click()
+        try:
+            sc.driver.find_element_by_name("高清拍摄").click()
+        except NoSuchElementException:
+            sc.driver.find_element_by_name("拍摄").click()
         time.sleep(1)
 
         sc.logger.info('开始录制')
